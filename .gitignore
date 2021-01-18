@@ -6,5 +6,6 @@ bin/
 obj/
 *.userprefs
 .packages
+.vs/
 
 # End of https://www.toptal.com/developers/gitignore/api/xamarinstudio

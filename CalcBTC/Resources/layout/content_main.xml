@@ -8,18 +8,34 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical" 
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout2"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:src="@drawable/btc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:id="@+id/imageView2" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="top">
+        android:gravity="top"
+        android:paddingTop="100px" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="BTC Price Today: $"/>
+            android:text="Price Today: $"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -49,8 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/big_label"
-                android:maxLength="7"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:textAlignment="center"
                 android:fontFamily="monospace"/>
 
@@ -84,9 +99,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/big_label"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:textAlignment="center"
-                android:fontFamily="monospace"/>
+                android:fontFamily="monospace" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -99,6 +114,20 @@
                 android:textAlignment="center"
                 android:fontFamily="monospace"/>
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout1"
+        android:orientation="horizontal"
+        android:gravity="bottom">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UPDATE PRICE"
+            android:id="@+id/btn_updateprice"
+            android:fontFamily="monospace" />
     </LinearLayout>
 
 

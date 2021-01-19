@@ -12,6 +12,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Android.Text;
+using Xamarin.Essentials;
 
 namespace CalcBTC
 {
@@ -21,6 +22,8 @@ namespace CalcBTC
         EditText btcs;
         EditText usds;
         TextView pricetoday;
+        Button btn_updateprice;
+
         double priceInUSD;
 
         const string Url = "https://api.pro.coinbase.com/products/BTC-USD/ticker";
@@ -34,36 +37,68 @@ namespace CalcBTC
             pricetoday = FindViewById<TextView>(Resource.Id.pricetoday);
             btcs = FindViewById<EditText>(Resource.Id.btcs);
             usds = FindViewById<EditText>(Resource.Id.usds);
+            btn_updateprice = FindViewById<Button>(Resource.Id.btn_updateprice);
             GetPrice();
+            btn_updateprice.Click += UpdateOnClic;
             btcs.TextChanged += CalculateUSDs;
-            //usds.TextChanged += CalculateBTCs;
-            Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
+            usds.TextChanged += CalculateBTCs;
+
+            //Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             
+            //SetSupportActionBar(toolbar);
 
-            SetSupportActionBar(toolbar);
+        }
 
+        void UpdateOnClic(object sender, EventArgs e)
+        {
+            GetPrice();
         }
 
         void CalculateUSDs(object sender, EventArgs e)
         {
             double inBtcs;
-            if (double.TryParse(btcs.Text, out inBtcs))
+            if (!(string.IsNullOrEmpty(btcs.Text)))
             {
-                double outUSDs = priceInUSD * inBtcs;
-                usds.Text = outUSDs.ToString();
+                if (double.TryParse(btcs.Text, out inBtcs))
+                {
+                    double outUSDs = priceInUSD * inBtcs;
+
+                    usds.TextChanged -= CalculateBTCs;
+                    usds.Text = outUSDs.ToString();
+                    usds.TextChanged += CalculateBTCs;
+                }
+            }
+            else
+            {
+                usds.TextChanged -= CalculateBTCs;
+                usds.Text = "";
+                usds.TextChanged += CalculateBTCs;
             }
         }
         void CalculateBTCs(object sender, EventArgs e)
         {
             double inUSDs;
-            if (double.TryParse(usds.Text, out inUSDs))
+            if (!(string.IsNullOrEmpty(usds.Text)))
             {
-                double outBTCs = inUSDs / priceInUSD;
-                btcs.Text = outBTCs.ToString();
+                if (double.TryParse(usds.Text, out inUSDs))
+                {
+                    double outBTCs = inUSDs / priceInUSD;
+
+                    btcs.TextChanged -= CalculateUSDs;
+                    btcs.Text = outBTCs.ToString();
+                    btcs.TextChanged += CalculateUSDs;
+                }
+            }
+            else
+            {
+                btcs.TextChanged -= CalculateUSDs;
+                btcs.Text = "";
+                btcs.TextChanged += CalculateUSDs;
             }
         }
 
-        private async void GetPrice()
+
+            private async void GetPrice()
         {
             HttpClient client = new HttpClient();
             var result = await client.GetStringAsync(Url);
